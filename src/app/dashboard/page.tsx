@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import { formatCurrency, formatDateShort } from "@/lib/utils";
-import { Plus, TrendingUp, ChevronRight, Copy, Check } from "lucide-react";
+import { Plus, TrendingUp, ChevronRight, Copy, Check, Settings } from "lucide-react";
 import { useState } from "react";
 
 export default function DashboardPage() {
@@ -45,13 +45,18 @@ export default function DashboardPage() {
           <h1 className="text-xl font-bold truncate max-w-[200px]">{currentGroup?.name}</h1>
           <p className="text-sm text-muted-foreground">Hi, {user?.name?.split(" ")[0]} 👋</p>
         </div>
-        <button
-          onClick={copyInviteCode}
-          className="flex items-center gap-1.5 bg-muted rounded-xl px-3 py-2 text-xs font-mono font-semibold text-muted-foreground hover:text-foreground transition-colors"
-        >
-          {copied ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
-          {currentGroup?.invite_code}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={copyInviteCode}
+            className="flex items-center gap-1.5 bg-muted rounded-xl px-3 py-2 text-xs font-mono font-semibold text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {copied ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
+            {currentGroup?.invite_code}
+          </button>
+          <Link href="/settings" className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+            <Settings className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
 
       {/* Monthly total hero card */}
