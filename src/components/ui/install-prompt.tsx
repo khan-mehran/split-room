@@ -96,7 +96,7 @@ export function InstallPrompt() {
 
           {/* App identity */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center shadow-lg text-3xl flex-shrink-0">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center shadow-lg text-3xl flex-shrink-0">
               🏠
             </div>
             <div>

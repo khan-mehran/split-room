@@ -165,14 +165,30 @@ export default function AddExpensePage() {
         {/* Date & Paid By */}
         <Card>
           <CardContent className="p-4 space-y-4">
-            <Input
-              label="Date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              error={errors.date}
-              leftIcon={<Calendar className="h-4 w-4" />}
-            />
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-foreground">Date</label>
+              <div className={cn(
+                "relative flex h-11 w-full items-center gap-2 rounded-lg border border-input bg-background px-3",
+                "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-1",
+                errors.date && "border-destructive"
+              )}>
+                <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                <span className="text-sm flex-1 text-foreground">
+                  {date
+                    ? new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" })
+                        .format(new Date(date + "T00:00:00"))
+                    : "Select date"}
+                </span>
+                {/* Invisible native date input — opens the system picker on tap */}
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </div>
+              {errors.date && <p className="text-xs text-destructive">{errors.date}</p>}
+            </div>
 
             <div className="space-y-2">
               <label className="text-sm font-medium">Paid by</label>

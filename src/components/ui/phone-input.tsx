@@ -72,16 +72,23 @@ export function PhoneInput({ value, onChange, error, label }: PhoneInputProps) {
   return (
     <div className="space-y-1.5">
       {label && <label className="text-sm font-medium text-foreground">{label}</label>}
-      <div className="flex" ref={ref}>
+      <div
+        ref={ref}
+        className={cn(
+          "flex rounded-lg border border-input bg-background overflow-hidden",
+          "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-1",
+          error && "border-destructive"
+        )}
+      >
         {/* Flag + code selector */}
         <div className="relative flex-shrink-0">
           <button
             type="button"
             onClick={() => setOpen(!open)}
             className={cn(
-              "h-11 flex items-center gap-1.5 px-3 rounded-l-lg border-y border-l border-input bg-muted",
+              "h-11 flex items-center gap-1.5 px-3 border-r border-input bg-muted",
               "hover:bg-muted/70 transition-colors text-sm font-medium min-w-[90px]",
-              error && "border-destructive"
+              "focus:outline-none"
             )}
           >
             <span className="text-lg leading-none">{country.flag}</span>
@@ -121,10 +128,9 @@ export function PhoneInput({ value, onChange, error, label }: PhoneInputProps) {
           maxLength={country.digits}
           placeholder={"•".repeat(country.digits)}
           className={cn(
-            "flex-1 h-11 rounded-r-lg border border-input bg-background px-3 text-sm",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
-            "placeholder:text-muted-foreground/40 tracking-widest font-mono",
-            error && "border-destructive"
+            "flex-1 h-11 bg-background px-3 text-sm",
+            "focus:outline-none",
+            "placeholder:text-muted-foreground/40 tracking-widest font-mono"
           )}
         />
       </div>

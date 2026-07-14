@@ -8,7 +8,7 @@ interface AvatarProps {
 }
 
 const colors = [
-  "bg-teal-600 text-white",
+  "bg-slate-600 text-white",
   "bg-violet-600 text-white",
   "bg-blue-600 text-white",
   "bg-rose-500 text-white",

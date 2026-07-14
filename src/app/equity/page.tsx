@@ -61,11 +61,11 @@ export default function EquityPage() {
       </div>
 
       {/* Summary */}
-      <Card className="bg-gradient-to-br from-teal-700 to-teal-800 border-0 text-white">
+      <Card className="bg-gradient-to-br from-slate-700 to-slate-900 border-0 text-white">
         <CardContent className="p-5">
-          <p className="text-teal-100 text-sm">{scope === "month" ? "This month's" : "Total"} expenses</p>
+          <p className="text-slate-300 text-sm">{scope === "month" ? "This month's" : "Total"} expenses</p>
           <p className="text-3xl font-bold mt-1">{formatCurrency(totalExpenses)}</p>
-          <p className="text-teal-200 text-sm mt-2">
+          <p className="text-slate-400 text-sm mt-2">
             Fair share per person: <span className="font-bold text-white">{formatCurrency(fairShare)}</span>
           </p>
         </CardContent>

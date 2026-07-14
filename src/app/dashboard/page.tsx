@@ -60,9 +60,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Monthly total hero card */}
-      <Card className="bg-gradient-to-br from-teal-700 to-teal-800 border-0 text-white shadow-lg shadow-teal-900/20">
+      <Card className="bg-gradient-to-br from-slate-700 to-slate-900 border-0 text-white shadow-lg shadow-slate-900/20">
         <CardContent className="p-5">
-          <p className="text-teal-100 text-sm font-medium">
+          <p className="text-slate-300 text-sm font-medium">
             Current Period Total
           </p>
           <p className="text-4xl font-bold mt-1 tracking-tight">
@@ -70,15 +70,15 @@ export default function DashboardPage() {
           </p>
           <div className="flex items-center gap-3 mt-4">
             <div className="flex-1 bg-white/10 rounded-xl p-3">
-              <p className="text-teal-100 text-xs">Members</p>
+              <p className="text-slate-300 text-xs">Members</p>
               <p className="text-white font-bold text-lg">{activeMembers.length}</p>
             </div>
             <div className="flex-1 bg-white/10 rounded-xl p-3">
-              <p className="text-teal-100 text-xs">Expenses</p>
+              <p className="text-slate-300 text-xs">Expenses</p>
               <p className="text-white font-bold text-lg">{thisMonth.length}</p>
             </div>
             <div className="flex-1 bg-white/10 rounded-xl p-3">
-              <p className="text-teal-100 text-xs">Per Person</p>
+              <p className="text-slate-300 text-xs">Per Person</p>
               <p className="text-white font-bold text-lg">
                 {activeMembers.length > 0 ? formatCurrency(monthTotal / activeMembers.length) : "-"}
               </p>

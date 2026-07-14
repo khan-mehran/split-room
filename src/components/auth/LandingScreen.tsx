@@ -15,14 +15,14 @@ export default function LandingScreen() {
   if (view === "signin") return <SignInForm onBack={() => setView("landing")} />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center p-6">
       {/* Logo */}
       <div className="mb-10 text-center animate-fade-in">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white/15 backdrop-blur-sm mb-4 shadow-xl">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-xl">
           <span className="text-4xl">🏠</span>
         </div>
         <h1 className="text-4xl font-bold text-white tracking-tight">SplitRoom</h1>
-        <p className="text-teal-100 mt-2 text-base">Shared expenses, zero drama.</p>
+        <p className="text-slate-300 mt-2 text-base">Shared expenses, zero drama.</p>
       </div>
 
       {/* Feature bullets */}
@@ -32,7 +32,7 @@ export default function LandingScreen() {
           { icon: "⚖️", text: "See who owes whom at a glance" },
           { icon: "📱", text: "Works offline, installable on mobile" },
         ].map((f) => (
-          <div key={f.text} className="flex items-center gap-3 bg-white/10 rounded-xl px-4 py-3">
+          <div key={f.text} className="flex items-center gap-3 bg-white/8 border border-white/10 rounded-xl px-4 py-3">
             <span className="text-xl">{f.icon}</span>
             <span className="text-white/90 text-sm font-medium">{f.text}</span>
           </div>
@@ -43,7 +43,7 @@ export default function LandingScreen() {
       <div className="w-full max-w-sm space-y-3 animate-fade-in">
         <Button
           size="xl"
-          className="w-full bg-white text-teal-800 hover:bg-teal-50 font-bold shadow-lg"
+          className="w-full bg-white text-slate-900 hover:bg-slate-100 font-bold shadow-lg"
           onClick={() => setView("register")}
         >
           <Plus className="mr-2 h-5 w-5" />
@@ -52,7 +52,7 @@ export default function LandingScreen() {
         <Button
           size="xl"
           variant="outline"
-          className="w-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white font-semibold"
+          className="w-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white font-semibold"
           onClick={() => setView("signin")}
         >
           <Users className="mr-2 h-5 w-5" />
@@ -60,7 +60,7 @@ export default function LandingScreen() {
         </Button>
       </div>
 
-      <p className="text-teal-200/60 text-xs mt-8">No password needed — just your phone number + PIN</p>
+      <p className="text-slate-500 text-xs mt-8">No password needed — just your phone number + PIN</p>
     </div>
   );
 }

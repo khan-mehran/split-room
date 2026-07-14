@@ -49,21 +49,21 @@ export default function RegisterForm({ onBack }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800 flex flex-col p-6">
-      <button onClick={onBack} className="text-white/80 hover:text-white flex items-center gap-1.5 mb-8 w-fit">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col p-6">
+      <button onClick={onBack} className="text-slate-400 hover:text-white flex items-center gap-1.5 mb-8 w-fit transition-colors">
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
 
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-white">Create Account</h1>
-        <p className="text-teal-100 mt-1 text-sm">Join or create a shared expense group</p>
+        <p className="text-slate-300 mt-1 text-sm">Join or create a shared expense group</p>
       </div>
 
       <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-xl w-full max-w-sm mx-auto">
         <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
           <Input
             label="Full Name"
-            placeholder="Ali Hassan"
+            placeholder="Mehran Khan"
             value={name}
             onChange={(e) => setName(e.target.value)}
             error={errors.name}
@@ -106,7 +106,7 @@ export default function RegisterForm({ onBack }: Props) {
         </form>
       </div>
 
-      <p className="text-teal-100/60 text-xs text-center mt-6">
+      <p className="text-slate-500 text-xs text-center mt-6">
         After registering, you can create a group or join one with an invite code.
       </p>
     </div>
