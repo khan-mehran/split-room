@@ -4,7 +4,6 @@ import { useAuth } from "@/lib/auth-context";
 import LandingScreen from "@/components/auth/LandingScreen";
 import GroupSetup from "@/components/groups/GroupSetup";
 import BottomNav from "./BottomNav";
-import { ThemeToggle } from "./ThemeToggle";
 
 interface Props {
   children: React.ReactNode;
@@ -30,7 +29,6 @@ export default function AppShell({ children }: Props) {
 
   return (
     <>
-      <ThemeToggle />
       {!currentGroup ? (
         <GroupSetup />
       ) : (

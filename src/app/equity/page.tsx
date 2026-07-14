@@ -17,7 +17,7 @@ import { isSameMonth } from "date-fns";
 
 export default function EquityPage() {
   const { currentGroup, user } = useAuth();
-  const { data: expenses = [] } = useExpenses(currentGroup?.id);
+  const { data: expenses = [] } = useExpenses(currentGroup?.id, currentGroup?.last_cleared_at);
   const { data: members = [] } = useGroupMembers(currentGroup?.id);
   const [scope, setScope] = useState<"all" | "month">("month");
 

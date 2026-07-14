@@ -7,11 +7,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar } from "@/components/ui/avatar";
-import { Check, X, Copy, Crown, LogOut } from "lucide-react";
+import { Check, X, Copy, Crown, LogOut, Sun, Moon, RotateCcw } from "lucide-react";
+import { useTheme } from "@/lib/theme-context";
+import { useEndPeriod } from "@/hooks/useExpenses";
 
 
 export default function MembersPage() {
-  const { user, currentGroup, isAdmin, signOut } = useAuth();
+  const { user, currentGroup, isAdmin, signOut, refreshGroup } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const endPeriod = useEndPeriod();
+
+  async function handleEndPeriod() {
+    if (!currentGroup) return;
+    if (!confirm("End this period?\n\nAll current expenses will be archived and a fresh period starts. This cannot be undone.")) return;
+    await endPeriod.mutateAsync({ groupId: currentGroup.id });
+    await refreshGroup();
+  }
   const { data: members = [], isLoading } = useGroupMembers(currentGroup?.id);
   const approveMember = useApproveMember();
   const removeMember = useRemoveMember();
@@ -146,8 +157,57 @@ export default function MembersPage() {
         )}
       </div>
 
-      {/* Sign out */}
-      <div className="pt-2">
+      {/* End Period — admin only */}
+      {isAdmin && (
+        <Card className="border-rose-200 dark:border-rose-900">
+          <CardContent className="p-4 space-y-3">
+            <div>
+              <p className="font-semibold text-sm">End Current Period</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Archives all expenses so far. Every new expense after this starts a fresh record.
+              </p>
+            </div>
+            <Button
+              variant="destructive"
+              size="sm"
+              className="w-full gap-2"
+              loading={endPeriod.isPending}
+              onClick={handleEndPeriod}
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              End Period &amp; Clear Records
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Settings */}
+      <div className="pt-2 space-y-2">
+        <Card>
+          <CardContent className="flex items-center justify-between p-4">
+            <div className="flex items-center gap-3">
+              {theme === "dark"
+                ? <Sun className="h-4 w-4 text-amber-500" />
+                : <Moon className="h-4 w-4 text-slate-500" />}
+              <span className="text-sm font-medium">
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
+              </span>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                theme === "dark" ? "bg-primary" : "bg-muted-foreground/30"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                  theme === "dark" ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </CardContent>
+        </Card>
+
         <Button variant="ghost" className="w-full text-muted-foreground gap-2" onClick={signOut}>
           <LogOut className="h-4 w-4" />
           Sign Out

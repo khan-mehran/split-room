@@ -18,6 +18,7 @@ interface AuthContextValue extends AuthState {
   signOut: () => void;
   setCurrentGroup: (group: Group, membership: GroupMember) => void;
   refreshUser: () => Promise<void>;
+  refreshGroup: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -158,10 +159,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (data) setUser(data);
   }
 
+  async function refreshGroup() {
+    if (!currentGroup) return;
+    const { data } = await supabase.from("groups").select("*").eq("id", currentGroup.id).single();
+    if (data) setGroup(data as Group);
+  }
+
   return (
     <AuthContext.Provider value={{
       user, currentGroup, membership, isLoading, isAdmin,
-      signIn, signUp, signOut, setCurrentGroup, refreshUser,
+      signIn, signUp, signOut, setCurrentGroup, refreshUser, refreshGroup,
     }}>
       {children}
     </AuthContext.Provider>

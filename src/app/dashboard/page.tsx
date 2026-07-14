@@ -15,16 +15,12 @@ import { useState } from "react";
 
 export default function DashboardPage() {
   const { user, currentGroup, isAdmin } = useAuth();
-  const { data: expenses = [], isLoading: expLoading } = useExpenses(currentGroup?.id);
+  const { data: expenses = [], isLoading: expLoading } = useExpenses(currentGroup?.id, currentGroup?.last_cleared_at);
   const { data: members = [] } = useGroupMembers(currentGroup?.id);
   const [copied, setCopied] = useState(false);
 
-  const now = new Date();
-  const thisMonth = expenses.filter((e) => {
-    const d = new Date(e.expense_date);
-    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  });
-  const monthTotal = thisMonth.reduce((s, e) => s + Number(e.amount), 0);
+  const thisMonth = expenses;
+  const monthTotal = expenses.reduce((s, e) => s + Number(e.amount), 0);
 
   const activeMembers = members.filter((m) => m.status === "active");
   const balances = useMemo(() => computeBalances(members, expenses), [members, expenses]);
@@ -62,7 +58,7 @@ export default function DashboardPage() {
       <Card className="bg-gradient-to-br from-teal-700 to-teal-800 border-0 text-white shadow-lg shadow-teal-900/20">
         <CardContent className="p-5">
           <p className="text-teal-100 text-sm font-medium">
-            {now.toLocaleString("default", { month: "long", year: "numeric" })} Total
+            Current Period Total
           </p>
           <p className="text-4xl font-bold mt-1 tracking-tight">
             {formatCurrency(monthTotal)}

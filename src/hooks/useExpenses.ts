@@ -4,17 +4,19 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import type { Expense } from "@/types";
 
-export function useExpenses(groupId: string | null | undefined) {
+export function useExpenses(groupId: string | null | undefined, since?: string | null) {
   return useQuery({
-    queryKey: ["expenses", groupId],
+    queryKey: ["expenses", groupId, since ?? null],
     queryFn: async () => {
       if (!groupId) return [];
-      const { data, error } = await supabase
+      let q = supabase
         .from("expenses")
         .select("*, users(id, name)")
         .eq("group_id", groupId)
         .order("expense_date", { ascending: false })
         .order("created_at", { ascending: false });
+      if (since) q = q.gt("created_at", since);
+      const { data, error } = await q;
       if (error) throw error;
       return data as Expense[];
     },
@@ -51,6 +53,24 @@ export function useDeleteExpense() {
       return groupId;
     },
     onSuccess: (groupId) => {
+      qc.invalidateQueries({ queryKey: ["expenses", groupId] });
+    },
+  });
+}
+
+export function useEndPeriod() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ groupId }: { groupId: string }) => {
+      const now = new Date().toISOString();
+      const { error } = await supabase
+        .from("groups")
+        .update({ last_cleared_at: now })
+        .eq("id", groupId);
+      if (error) throw error;
+      return now;
+    },
+    onSuccess: (_, { groupId }) => {
       qc.invalidateQueries({ queryKey: ["expenses", groupId] });
     },
   });

@@ -72,7 +72,7 @@ export default function AddExpensePage() {
   return (
     <div className="p-4 space-y-5 animate-fade-in">
       {/* Header */}
-      <div className="flex items-center gap-3 pt-2">
+      <div className="flex items-center gap-3 pt-6">
         <Link href="/dashboard">
           <button className="w-9 h-9 rounded-full bg-muted flex items-center justify-center hover:bg-border transition-colors">
             <ArrowLeft className="h-4 w-4" />
@@ -89,7 +89,7 @@ export default function AddExpensePage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">$</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold text-sm">QAR</span>
               <input
                 type="number"
                 inputMode="decimal"
@@ -97,7 +97,7 @@ export default function AddExpensePage() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className={cn(
-                  "flex h-14 w-full rounded-lg border border-input bg-background pl-7 pr-3 text-3xl font-bold",
+                  "flex h-14 w-full rounded-lg border border-input bg-background pl-12 pr-3 text-3xl font-bold",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   errors.amount && "border-destructive"
                 )}
@@ -120,7 +120,7 @@ export default function AddExpensePage() {
                       : "bg-background border-border text-muted-foreground hover:border-primary hover:text-primary"
                   )}
                 >
-                  ${qa}
+                  QR {qa}
                 </button>
               ))}
             </div>

@@ -12,7 +12,7 @@ import { format, subMonths, addMonths, isSameMonth } from "date-fns";
 
 export default function HistoryPage() {
   const { currentGroup, user, isAdmin } = useAuth();
-  const { data: expenses = [], isLoading } = useExpenses(currentGroup?.id);
+  const { data: expenses = [], isLoading } = useExpenses(currentGroup?.id, currentGroup?.last_cleared_at);
   const deleteExpense = useDeleteExpense();
   const [viewDate, setViewDate] = useState(new Date());
   const [deleting, setDeleting] = useState<string | null>(null);

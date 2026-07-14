@@ -7,6 +7,7 @@ export interface Group {
   invite_code: string;
   admin_id: string;
   created_at: string;
+  last_cleared_at?: string | null;
 }
 
 export interface User {
