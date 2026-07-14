@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, User, Phone, Lock } from "lucide-react";
+import { PhoneInput, COUNTRIES } from "@/components/ui/phone-input";
+import { PinInput } from "@/components/ui/pin-input";
+import { ArrowLeft, User } from "lucide-react";
 
 interface Props {
   onBack: () => void;
@@ -13,7 +15,7 @@ interface Props {
 export default function RegisterForm({ onBack }: Props) {
   const { signUp } = useAuth();
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(COUNTRIES[0].code);
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -23,10 +25,14 @@ export default function RegisterForm({ onBack }: Props) {
   function validate() {
     const e: Record<string, string> = {};
     if (!name.trim()) e.name = "Name is required";
-    if (!phone.trim()) e.phone = "Phone number is required";
-    else if (!/^\+?[\d\s\-()]{7,15}$/.test(phone.trim())) e.phone = "Enter a valid phone number";
+
+    const country = COUNTRIES.find((c) => phone.startsWith(c.code));
+    const digits = phone.replace(country?.code ?? "", "").replace(/\D/g, "");
+    if (!country || digits.length !== country.digits) {
+      e.phone = `Enter exactly ${country?.digits ?? 8} digits after the country code`;
+    }
+
     if (pin.length < 4) e.pin = "PIN must be at least 4 digits";
-    if (!/^\d+$/.test(pin)) e.pin = "PIN must be digits only";
     if (pin !== confirmPin) e.confirmPin = "PINs do not match";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -53,44 +59,41 @@ export default function RegisterForm({ onBack }: Props) {
         <p className="text-teal-100 mt-1 text-sm">Join or create a shared expense group</p>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-xl w-full max-w-sm mx-auto">
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-xl w-full max-w-sm mx-auto">
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
           <Input
             label="Full Name"
             placeholder="Ali Hassan"
             value={name}
             onChange={(e) => setName(e.target.value)}
             error={errors.name}
+            autoComplete="name"
             leftIcon={<User className="h-4 w-4" />}
           />
-          <Input
+
+          <PhoneInput
             label="Phone Number"
-            type="tel"
-            placeholder="+974 5555 1234"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={setPhone}
             error={errors.phone}
-            leftIcon={<Phone className="h-4 w-4" />}
           />
-          <Input
+
+          <PinInput
             label="Create PIN (4+ digits)"
-            type="password"
-            inputMode="numeric"
-            placeholder="••••"
+            placeholder="Choose a PIN"
             value={pin}
-            onChange={(e) => setPin(e.target.value)}
+            onChange={setPin}
             error={errors.pin}
-            leftIcon={<Lock className="h-4 w-4" />}
+            autoComplete="new-password"
           />
-          <Input
+
+          <PinInput
             label="Confirm PIN"
-            type="password"
-            inputMode="numeric"
-            placeholder="••••"
+            placeholder="Repeat your PIN"
             value={confirmPin}
-            onChange={(e) => setConfirmPin(e.target.value)}
+            onChange={setConfirmPin}
             error={errors.confirmPin}
-            leftIcon={<Lock className="h-4 w-4" />}
+            autoComplete="new-password"
           />
 
           {error && (

@@ -52,7 +52,7 @@ export default function LandingScreen() {
         <Button
           size="xl"
           variant="outline"
-          className="w-full border-white/40 text-white hover:bg-white/10 font-semibold"
+          className="w-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white font-semibold"
           onClick={() => setView("signin")}
         >
           <Users className="mr-2 h-5 w-5" />

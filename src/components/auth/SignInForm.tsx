@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ArrowLeft, Phone, Lock } from "lucide-react";
+import { PhoneInput, COUNTRIES } from "@/components/ui/phone-input";
+import { PinInput } from "@/components/ui/pin-input";
+import { ArrowLeft } from "lucide-react";
 
 interface Props {
   onBack: () => void;
@@ -12,7 +13,7 @@ interface Props {
 
 export default function SignInForm({ onBack }: Props) {
   const { signIn } = useAuth();
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(COUNTRIES[0].code);
   const [pin, setPin] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,9 @@ export default function SignInForm({ onBack }: Props) {
 
   function validate() {
     const e: Record<string, string> = {};
-    if (!phone.trim()) e.phone = "Phone number is required";
+    const country = COUNTRIES.find((c) => phone.startsWith(c.code));
+    const digits = phone.replace(country?.code ?? "", "").replace(/\D/g, "");
+    if (!country || digits.length < 1) e.phone = "Enter your phone number";
     if (!pin) e.pin = "PIN is required";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -47,26 +50,22 @@ export default function SignInForm({ onBack }: Props) {
         <p className="text-teal-100 mt-1 text-sm">Sign in with your phone number and PIN</p>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-xl w-full max-w-sm mx-auto">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
+      <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-xl w-full max-w-sm mx-auto">
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
+          <PhoneInput
             label="Phone Number"
-            type="tel"
-            placeholder="+974 5555 1234"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={setPhone}
             error={errors.phone}
-            leftIcon={<Phone className="h-4 w-4" />}
           />
-          <Input
+
+          <PinInput
             label="PIN"
-            type="password"
-            inputMode="numeric"
-            placeholder="••••"
+            placeholder="Enter your PIN"
             value={pin}
-            onChange={(e) => setPin(e.target.value)}
+            onChange={setPin}
             error={errors.pin}
-            leftIcon={<Lock className="h-4 w-4" />}
+            autoComplete="current-password"
           />
 
           {error && (

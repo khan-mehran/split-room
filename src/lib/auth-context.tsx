@@ -26,7 +26,6 @@ const SESSION_KEY = "splitroom_session";
 
 interface StoredSession {
   userId: string;
-  pin: string;
   groupId?: string;
 }
 
@@ -78,6 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function signUp(name: string, phoneNumber: string, pin: string) {
     const trimmedPhone = phoneNumber.trim();
+
     const { data: existing } = await supabase
       .from("users")
       .select("id")
@@ -87,12 +87,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data, error } = await supabase
       .from("users")
-      .insert({ name: name.trim(), phone_number: trimmedPhone })
+      .insert({ name: name.trim(), phone_number: trimmedPhone, pin })
       .select()
       .single();
     if (error || !data) return { error: error?.message || "Registration failed." };
 
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ userId: data.id, pin }));
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ userId: data.id }));
     setUser(data);
     return { user: data };
   }
@@ -103,26 +103,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .select("*")
       .eq("phone_number", phoneNumber.trim())
       .single();
-    if (error || !data) return { error: "Phone number not found." };
 
-    // PIN validation: in a real app use a hashed pin stored server-side.
-    // For this prototype, PIN is stored in localStorage only (not in DB).
-    const stored = localStorage.getItem(SESSION_KEY);
-    if (stored) {
-      const session: StoredSession = JSON.parse(stored);
-      if (session.userId === data.id && session.pin !== pin) {
-        return { error: "Incorrect PIN." };
-      }
+    if (error || !data) return { error: "Phone number not found. Please check and try again." };
+
+    // Verify PIN against the value stored in the database
+    if (data.pin && data.pin !== pin) {
+      return { error: "Incorrect PIN. Please try again." };
     }
 
-    const session: StoredSession = { userId: data.id, pin };
-    // Check if they have an active group
+    // If pin is null (legacy user before migration), save it now
+    if (!data.pin) {
+      await supabase.from("users").update({ pin }).eq("id", data.id);
+    }
+
+    const session: StoredSession = { userId: data.id };
     const { data: memberships } = await supabase
       .from("group_members")
       .select("*, groups(*)")
       .eq("user_id", data.id)
       .eq("status", "active")
       .limit(1);
+
     if (memberships?.[0]?.groups) {
       session.groupId = (memberships[0].groups as Group).id;
       setGroup(memberships[0].groups as Group);
