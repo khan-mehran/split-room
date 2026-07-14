@@ -124,7 +124,7 @@ export default function DashboardPage() {
       )}
 
       {/* Add expense FAB (duplicate for easy access) */}
-      <Link href="/add-expense">
+      <Link href="/add-expense" className="block mt-4">
         <Button size="lg" variant="accent" className="w-full shadow-md shadow-accent/20 gap-2">
           <Plus className="h-5 w-5" />
           Add Expense
