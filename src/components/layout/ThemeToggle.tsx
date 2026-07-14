@@ -17,12 +17,12 @@ export function ThemeToggle() {
         "flex items-center justify-center",
         "transition-all duration-200 active:scale-90",
         theme === "dark"
-          ? "bg-amber-400 hover:bg-amber-300"
+          ? "bg-slate-500 hover:bg-slate-400"
           : "bg-slate-800 hover:bg-slate-700"
       )}
     >
       {theme === "dark"
-        ? <Sun className="h-5 w-5 text-slate-900" />
+        ? <Sun className="h-5 w-5 text-white" />
         : <Moon className="h-5 w-5 text-white" />
       }
     </button>

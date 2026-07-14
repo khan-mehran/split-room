@@ -31,7 +31,7 @@ export default function BottomNav() {
           >
             <Plus className="h-6 w-6 strokeWidth={2.5}" />
           </Link>
-          <span className="text-[10px] text-muted-foreground mt-1">Add</span>
+          <span className={cn("text-[10px] mt-1", pathname === "/add-expense" ? "text-foreground font-semibold" : "text-muted-foreground font-medium")}>Add</span>
         </div>
 
         {/* Members */}
@@ -57,10 +57,14 @@ function NavItem({
       <Icon
         className={cn(
           "h-5 w-5 transition-colors",
-          active ? "text-primary" : "text-muted-foreground"
+          active ? "text-foreground" : "text-muted-foreground"
         )}
+        strokeWidth={active ? 2.5 : 1.75}
       />
-      <span className={cn("text-[10px] font-medium transition-colors", active ? "text-primary" : "text-muted-foreground")}>
+      <span className={cn(
+        "text-[10px] transition-colors",
+        active ? "text-foreground font-semibold" : "text-muted-foreground font-medium"
+      )}>
         {label}
       </span>
     </Link>

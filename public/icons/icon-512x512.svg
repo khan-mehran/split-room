@@ -19,7 +19,7 @@
   <rect x="203.776" y="331.776" width="103.936" height="128" rx="12.8" fill="#1e293b"/>
 
   <!-- Orange split badge -->
-  <circle cx="389.12" cy="112.64" r="53.76" fill="#F97316"/>
+  <circle cx="389.12" cy="112.64" r="53.76" fill="#64748b"/>
 
   <!-- Division symbol: top dot -->
   <circle cx="389.12" cy="92.2112" r="9.6768" fill="white"/>

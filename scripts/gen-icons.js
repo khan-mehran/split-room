@@ -57,7 +57,7 @@ const svgIcon = (size) => {
   <rect x="${doorX}" y="${doorY}" width="${doorW}" height="${doorH}" rx="${doorRx}" fill="#1e293b"/>
 
   <!-- Orange split badge -->
-  <circle cx="${badgeCx}" cy="${badgeCy}" r="${badgeR}" fill="#F97316"/>
+  <circle cx="${badgeCx}" cy="${badgeCy}" r="${badgeR}" fill="#64748b"/>
 
   <!-- Division symbol: top dot -->
   <circle cx="${badgeCx}" cy="${badgeCy - badgeR * 0.38}" r="${dotR}" fill="white"/>
