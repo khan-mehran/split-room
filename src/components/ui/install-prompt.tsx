@@ -96,9 +96,7 @@ export function InstallPrompt() {
 
           {/* App identity */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center shadow-lg text-3xl flex-shrink-0">
-              🏠
-            </div>
+            <img src="/logo-icon.svg" alt="SplitRoom" className="w-16 h-16 rounded-2xl shadow-lg flex-shrink-0" />
             <div>
               <p className="font-bold text-lg">SplitRoom</p>
               <p className="text-sm text-muted-foreground">Free · Works offline</p>
