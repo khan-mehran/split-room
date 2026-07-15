@@ -17,10 +17,12 @@ export default function LandingScreen() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center p-6">
       {/* Logo */}
-      <div className="mb-10 text-center animate-fade-in">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-sm mb-4 shadow-xl">
-          <span className="text-4xl">🏠</span>
-        </div>
+      <div className="mb-8 text-center animate-fade-in">
+        <img
+          src="/logo-icon.svg"
+          alt="SplitRoom"
+          className="w-[80px] h-[80px] mx-auto mb-4"
+        />
         <h1 className="text-4xl font-bold text-white tracking-tight">SplitRoom</h1>
         <p className="text-slate-300 mt-2 text-base">Shared expenses, zero drama.</p>
       </div>

@@ -1,40 +1,11 @@
 const fs = require('fs');
 const sharp = require('sharp');
 
-// Generates the SVG at any size
 const svgIcon = (size) => {
-  const rx = Math.round(size * 0.22); // rounded square corners
-
-  // Roof triangle
-  const roofLeft  = size * 0.094;
-  const roofRight = size * 0.906;
-  const roofTop   = size * 0.156;
-  const roofBase  = size * 0.500;
-  const cx        = size * 0.500;
-
-  // House body
-  const bodyX  = size * 0.141;
-  const bodyY  = size * 0.469;
-  const bodyW  = size * 0.719;
-  const bodyH  = size * 0.430;
-  const bodyRx = size * 0.039;
-
-  // Door (cutout — same color as background dark)
-  const doorX  = size * 0.398;
-  const doorY  = size * 0.648;
-  const doorW  = size * 0.203;
-  const doorH  = size * 0.250;
-  const doorRx = size * 0.025;
-
-  // Orange accent badge (top-right quadrant, above roof)
-  const badgeCx = size * 0.760;
-  const badgeCy = size * 0.220;
-  const badgeR  = size * 0.105;
-
-  // Dot and line sizes for ÷ symbol inside badge
-  const dotR  = badgeR * 0.18;
-  const lineW = badgeR * 1.10;
-  const lineH = badgeR * 0.16;
+  const bgRx = size * 0.18;
+  const scale = (size * 0.82) / 130; // hex is ~130px tall, fill 82% of icon
+  const tx = size / 2;
+  const ty = size / 2;
 
   return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
   <defs>
@@ -42,29 +13,34 @@ const svgIcon = (size) => {
       <stop offset="0%" stop-color="#334155"/>
       <stop offset="100%" stop-color="#0f172a"/>
     </linearGradient>
+    <filter id="sh" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="${size * 0.015}" stdDeviation="${size * 0.03}" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="${size}" height="${size}" rx="${rx}" fill="url(#bg)"/>
+  <rect width="${size}" height="${size}" rx="${bgRx}" fill="url(#bg)"/>
 
-  <!-- House roof -->
-  <polygon points="${roofLeft},${roofBase} ${cx},${roofTop} ${roofRight},${roofBase}" fill="white"/>
-
-  <!-- House body -->
-  <rect x="${bodyX}" y="${bodyY}" width="${bodyW}" height="${bodyH}" rx="${bodyRx}" fill="white"/>
-
-  <!-- Door -->
-  <rect x="${doorX}" y="${doorY}" width="${doorW}" height="${doorH}" rx="${doorRx}" fill="#1e293b"/>
-
-  <!-- Orange split badge -->
-  <circle cx="${badgeCx}" cy="${badgeCy}" r="${badgeR}" fill="#64748b"/>
-
-  <!-- Division symbol: top dot -->
-  <circle cx="${badgeCx}" cy="${badgeCy - badgeR * 0.38}" r="${dotR}" fill="white"/>
-  <!-- Division symbol: horizontal line -->
-  <rect x="${badgeCx - lineW / 2}" y="${badgeCy - lineH / 2}" width="${lineW}" height="${lineH}" rx="${lineH / 2}" fill="white"/>
-  <!-- Division symbol: bottom dot -->
-  <circle cx="${badgeCx}" cy="${badgeCy + badgeR * 0.38}" r="${dotR}" fill="white"/>
+  <g transform="translate(${tx},${ty}) scale(${scale})" filter="url(#sh)">
+    <polygon points="0,-65 56.3,-32.5 56.3,32.5 0,65 -56.3,32.5 -56.3,-32.5" fill="#2B4360"/>
+    <path d="M -6,-55 L -48,-31 C -51,-29 -51,-25 -51,-25 L -51,21 C -51,24 -49,26 -46,28 L -6,51 Z" fill="#4CB2A4"/>
+    <path d="M 6,-55 L 48,-31 C 51,-29 51,-25 51,-25 L 14,-4 Z" fill="#5CC7B8"/>
+    <path d="M 12,3 L 51,-20 L 51,21 C 51,24 49,26 46,28 L 6,51 Z" fill="#F49E58"/>
+    <path d="M 0,-65 L 0,65" stroke="#2B4360" stroke-width="7" stroke-linecap="round"/>
+    <path d="M -56.3,32.5 L 56.3,-32.5" stroke="#2B4360" stroke-width="7" stroke-linecap="round"/>
+    <polygon points="0,-65 56.3,-32.5 56.3,32.5 0,65 -56.3,32.5 -56.3,-32.5" fill="none" stroke="#2B4360" stroke-width="7" stroke-linejoin="round"/>
+    <g transform="translate(-27,2) scale(0.9)">
+      <circle cx="0" cy="0" r="14" fill="#FFFFFF"/>
+      <text x="0" y="5" font-family="system-ui,sans-serif" font-weight="800" font-size="16" fill="#2B4360" text-anchor="middle">$</text>
+    </g>
+    <g transform="translate(26,12) scale(0.85)" fill="#2B4360">
+      <circle cx="-5" cy="-8" r="5"/>
+      <path d="M -12,4 C -12,-2 -8,-3 -5,-3 C -2,-3 2,-2 2,4 Z"/>
+      <circle cx="7" cy="-4" r="6" stroke="#F49E58" stroke-width="2.5" fill="#2B4360"/>
+      <path d="M 0,10 C 0,3 4,2 8,2 C 12,2 16,3 16,10 Z" stroke="#F49E58" stroke-width="2.5" fill="#2B4360"/>
+    </g>
+    <line x1="-38" y1="52" x2="38" y2="-52" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+    <line x1="-38" y1="52" x2="38" y2="-52" stroke="#2B4360" stroke-width="4" stroke-linecap="round"/>
+  </g>
 </svg>`);
 };
 
@@ -73,7 +49,6 @@ async function generate() {
   for (const size of [192, 512]) {
     await sharp(svgIcon(size)).png().toFile(`public/icons/icon-${size}x${size}.png`);
     console.log(`✓ public/icons/icon-${size}x${size}.png`);
-    // Also write the SVG source
     fs.writeFileSync(`public/icons/icon-${size}x${size}.svg`, svgIcon(size).toString('utf-8'));
     console.log(`✓ public/icons/icon-${size}x${size}.svg`);
   }

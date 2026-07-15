@@ -55,6 +55,7 @@ export default function RegisterForm({ onBack }: Props) {
       </button>
 
       <div className="text-center mb-8">
+        <img src="/logo-icon.svg" alt="SplitRoom" className="w-[60px] h-[60px] mx-auto mb-4" />
         <h1 className="text-3xl font-bold text-white">Create Account</h1>
         <p className="text-slate-300 mt-1 text-sm">Join or create a shared expense group</p>
       </div>

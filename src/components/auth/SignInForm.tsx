@@ -46,6 +46,7 @@ export default function SignInForm({ onBack }: Props) {
       </button>
 
       <div className="text-center mb-8">
+        <img src="/logo-icon.svg" alt="SplitRoom" className="w-[60px] h-[60px] mx-auto mb-4" />
         <h1 className="text-3xl font-bold text-white">Welcome Back</h1>
         <p className="text-slate-300 mt-1 text-sm">Sign in with your phone number and PIN</p>
       </div>

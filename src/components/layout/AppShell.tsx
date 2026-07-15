@@ -14,13 +14,12 @@ export default function AppShell({ children }: Props) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-3">
-          <div className="w-14 h-14 rounded-3xl bg-primary/10 flex items-center justify-center mx-auto animate-pulse">
-            <span className="text-3xl">🏠</span>
-          </div>
-          <p className="text-muted-foreground text-sm">Loading SplitRoom...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <img
+          src="/logo-icon.svg"
+          alt="SplitRoom"
+          className="w-[80px] h-[80px] animate-pulse"
+        />
       </div>
     );
   }
