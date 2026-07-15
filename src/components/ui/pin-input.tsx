@@ -38,6 +38,8 @@ export function PinInput({
           inputMode="numeric"
           value={value}
           readOnly={!active}
+          onMouseDown={() => setActive(true)}
+          onTouchStart={() => setActive(true)}
           onFocus={() => setActive(true)}
           onChange={(e) => onChange(e.target.value.replace(/\D/g, ""))}
           placeholder={placeholder}
